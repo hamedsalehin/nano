@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js Build
+.next/
+out/
+build/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Project Archives (Don't push large ZIP files to GitHub)
+*.zip
+*.tar.gz
+*.7z
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# V0 Runtime
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
