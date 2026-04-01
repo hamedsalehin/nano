@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     ])
 
     const orders = await prisma.order.findMany({ select: { totalPrice: true } })
-    const totalRevenue = orders.reduce((sum, order) => sum + order.totalPrice, 0)
+    const totalRevenue = orders.reduce((sum: number, order: { totalPrice: number }) => sum + order.totalPrice, 0)
 
     return NextResponse.json({
       totalOrders,
