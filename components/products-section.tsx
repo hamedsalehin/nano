@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cart-context"
 import { products, Product } from "@/lib/products-data"
 
 const categories = [
-  "All",
+  "All22",
   "Outdoor",
   "Indoor",
   "Creative",
@@ -20,7 +20,7 @@ const categories = [
 
 const ProductCard = memo(({ product }: { product: Product }) => {
   const { addItem } = useCart()
-  
+
   return (
     <div className="group bg-card rounded-xl border border-border overflow-hidden card-glow transition-all hover:-translate-y-1">
       <div className="relative h-56 overflow-hidden">
