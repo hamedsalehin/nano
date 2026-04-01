@@ -193,12 +193,21 @@ export function Navbar() {
 
           <Link
             href="/login"
-            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 text-[13px]
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-[13px]
                        font-medium text-muted-foreground hover:text-foreground
                        rounded-md hover:bg-secondary/50 transition-colors"
           >
             <User className="w-3.5 h-3.5" />
             Login
+          </Link>
+
+          <Link
+            href="/login?mode=register"
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-[13px]
+                       font-medium text-foreground bg-primary/10 hover:bg-primary/20
+                       rounded-md transition-colors"
+          >
+            Register
           </Link>
 
           <button
@@ -329,16 +338,27 @@ export function Navbar() {
 
           {/* bottom CTA */}
           <div className="pt-2 mt-1 border-t border-border/40 flex flex-col gap-1.5">
-            <Link
-              href="/login"
-              onClick={closeMobile}
-              className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium
-                         text-muted-foreground hover:text-foreground
-                         rounded-lg hover:bg-secondary/50 transition-colors"
-            >
-              <User className="w-4 h-4" />
-              Login / Panel
-            </Link>
+            <div className="flex gap-2 p-1">
+              <Link
+                href="/login"
+                onClick={closeMobile}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium
+                           text-muted-foreground hover:text-foreground border border-border/50
+                           rounded-lg hover:bg-secondary/50 transition-colors"
+              >
+                <User className="w-4 h-4" />
+                Login
+              </Link>
+              <Link
+                href="/login?mode=register"
+                onClick={closeMobile}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium
+                           bg-primary/10 text-primary hover:bg-primary/20
+                           rounded-lg transition-colors"
+              >
+                Register
+              </Link>
+            </div>
             <a
               href="#contact"
               onClick={closeMobile}

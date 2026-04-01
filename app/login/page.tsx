@@ -16,8 +16,16 @@ export default function LoginPage() {
   const [name, setName] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [isLogin, setIsLogin] = useState(true)
   const router = useRouter()
+  // useSearchParams is only safe during client component if wrapped in Suspense, but for simplicity let's read the window location directly via useEffect or just keep it simple.
+  const [isLogin, setIsLogin] = useState(true)
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isReg = new URLSearchParams(window.location.search).get("mode") === "register"
+      if (isReg) setIsLogin(false)
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
