@@ -5,8 +5,10 @@
 @custom-variant xs (@media (width >= 480px));
 
 /* Global styles */
-html {
+html, body {
   scroll-behavior: smooth;
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
 }
 
 /* Dark mode (default) */
