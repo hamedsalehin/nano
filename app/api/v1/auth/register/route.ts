@@ -1,26 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/db"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
-// Mock user database
-const mockUsers: any[] = [
-  {
-    id: "admin-1",
-    email: "root",
-    password: "root",
-    role: "ADMIN",
-    name: "Administrator",
-  },
-]
-
-function generateDemoToken(userId: string, email: string, role: string): string {
-  const payload = {
-    userId,
-    email,
-    role,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + 604800,
-  }
-  return Buffer.from(JSON.stringify(payload)).toString("base64")
-}
+const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-key-change-in-production"
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,7 +31,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const existingUser = mockUsers.find((u) => u.email === email)
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    })
+    
     if (existingUser) {
       return NextResponse.json(
         { error: "User already exists" },
@@ -56,17 +42,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const newUser = {
-      id: `user-${Date.now()}`,
-      email,
-      password,
-      name,
-      role: "CUSTOMER",
-    }
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-    mockUsers.push(newUser)
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        name,
+        role: "CUSTOMER",
+      }
+    })
 
-    const token = generateDemoToken(newUser.id, newUser.email, newUser.role)
+    const token = jwt.sign(
+      { userId: newUser.id, email: newUser.email, role: newUser.role },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    )
 
     return NextResponse.json(
       {
@@ -83,7 +74,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Register error:", error)
     return NextResponse.json(
-      { error: "Failed to register" },
+      { error: "Failed to register account" },
       { status: 500 }
     )
   }
