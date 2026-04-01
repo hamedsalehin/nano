@@ -98,6 +98,8 @@ export function HeroSlider() {
               src={s.image}
               alt={s.title}
               fill
+              sizes="100vw"
+              quality={i === 0 ? 85 : 60}
               className="object-cover"
               priority={i === 0}
               // @ts-ignore
