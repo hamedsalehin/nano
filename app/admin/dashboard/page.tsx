@@ -17,16 +17,32 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // This would fetch real stats from API
-    const mockData = {
-      totalOrders: 156,
-      totalRevenue: 45890,
-      totalProducts: 42,
-      totalUsers: 89,
-    }
-    setStats(mockData)
-    setLoading(false)
+    fetchStats()
   }, [])
+
+  const fetchStats = async () => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      if (!token) return window.location.href = '/login'
+
+      const res = await fetch('/api/v1/admin/stats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setStats(data)
+      } else if (res.status === 401 || res.status === 403) {
+        localStorage.removeItem('auth_token')
+        window.location.href = '/login'
+      }
+    } catch {
+      console.error('Failed to load stats')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const chartData = [
     { month: 'Jan', sales: 4000 },
